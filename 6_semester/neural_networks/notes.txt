@@ -1,0 +1,51 @@
+mamy wszystkie litery alfabetu (10x10) - kazda komorka to bool
+
+mamy zrobic liniow¹ sieæ neuronow¹ od rozpoznawania liter
+
+wydaje sie fajne:   
+http://fourier.eng.hmc.edu/e161/lectures/nn/node4.html //ale to o hebbie a to nie ma byc z hebba
+
+klasyfikator liniowy:
+http://kzi.polsl.pl/~mblachnik/lib/exe/fetch.php?media=dydaktyka:zajecia:ai:lab:matlab:klasyfikator_liniowy.pdf
+
+
+
+Notatki z tablicy:
+korzystamy z klasyfikatora minimalnoodleg³oœciowego (¿urada - sztuczne sieci neuronowe strona 72)
+
+linia = w^T*x = y
+
+	Mamy R wzorców:
+		P_1, ..., P_R	- 	ka¿dy z nich reprezentuje inn¹ klasê:
+
+		R_i nale¿y do R^100 w naszym zadaniu (10x10 -> 100-wymiarowa przestrzeñ)
+		
+	Odleg³oœæ eulkidesowa pomiêdzy x a P_i zapisuje siê:
+		||x-P_i|| = sqrt((x-P_i)^T*(x-P_i)), i=1,...,R
+		
+	Klasyfikator minimaloodleg³oœciowy oblicza odleg³oœæ pomiêdzy x, a ka¿dym wzorcem. X zostaje zaliczony do klasy j-tej, która okreœlona jest par¹ P_j
+	||x-P_j||^2 jest najmniejsza
+	
+	||x-P_i||^2 = x^T*x - 2*(P_i)^T*x + (P_i)^T*P_i //x^T*x jest sta³e, wiêc mo¿na olaæ
+	
+	Wybierzmy j, takie, ¿e 2*(P_i)^T*x - (P_i)^T*P_i jest najmniejsze //wiêc odleg³oœæ te¿ bêdzie najmniejsza
+	
+	g - funkcja dyskryminacyjna pozwalaj¹ca wybraæ odpowiedni¹ klasê (na p³aszczyŸnie proste oddzielaj¹ce)
+	g_i(x) = (P_i)^T*x - 1/2*(P_i)^T*P_i
+	
+	g_i(x) = (w_i)^T*x + w_(i,n+1)
+	
+	w_i = P_i
+	w_(i,n+1) = -1/2*(P_i)^T*P_i
+	
+	
+	na koñcu by³ obrazek, z którego wynika, ¿e:
+		- dla kazdej klasy (listry):
+			- dla ka¿dego punktu (1 ze 100) bierzemy punkt przepuszczamy przez wagê
+			- potem sumujemy wszystkie punkty
+		-na koñcu patrzymy, która klasa ma najwiêksz¹ sumê 
+		
+		w_i=[w_(i,1), w_(i,2), ..., w_(i,n)] * w_(i,n+1) //w_i to wektor, w_(i,2) to 2 piksel itej litery
+	
+	
+		
