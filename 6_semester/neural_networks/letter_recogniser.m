@@ -3,14 +3,14 @@ function [ recognised_letter ] = letter_recogniser( input )
 %% load letters
 letters = load_letters_definitions();
 
-% make '-1' out of '0'
-letters = letters *2 - 1;
+%% weight calculation
+w_n_plus_1 = -1*sum(letters'.*letters',2)/2;
 
-%% match
-matcher = letters' * input;
+%% dicrimination foo vector calculation
+discrimination = letters' * input + w_n_plus_1;
 
-%% find and return best match
-recognised_letter = find(ismember(matcher, max(matcher)));
+%% find and return best match (bigest val index in discrimination vector)
+recognised_letter = find(ismember(discrimination, max(discrimination)));
 
 end
 
