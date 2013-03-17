@@ -49,7 +49,7 @@ namespace lab2_NEH
                 LinkedList<Task> tempList = new LinkedList<Task>(currList); //linked list copying in here - low performance action
                 LinkedListNode<Task> nodeToInsertBefore = tempList.Find(task); //linear complexity - bad!!!
                 tempList.AddBefore(nodeToInsertBefore, taskToInsert);
-                int currCMax = CalcCMaxforPermutation(currList);
+                int currCMax = CalcCMaxforPermutation(tempList);
                 if (currCMax < bestPosCMax)
                 {
                     bestPosCMax = currCMax;
@@ -59,7 +59,7 @@ namespace lab2_NEH
             LinkedList<Task> tempList2 = new LinkedList<Task>(currList); //refactor this "2" shit
             LinkedListNode<Task> nodeToInsertAfter = tempList2.Last;
             tempList2.AddAfter(nodeToInsertAfter, taskToInsert);
-            int currCMax2 = CalcCMaxforPermutation(currList);
+            int currCMax2 = CalcCMaxforPermutation(tempList2);
             if (currCMax2 < bestPosCMax)
             {
                 currList.AddAfter(currList.Find(nodeToInsertAfter.Value), taskToInsert);
@@ -81,14 +81,17 @@ namespace lab2_NEH
             int[,] arr = new int[currList.Count + 1, noOfThingsToDoInEachTask + 1];
 
             int i = 1;
-            foreach(Task task in currList)
+            int noOfThingsToDoInEachTaskPlus1 = noOfThingsToDoInEachTask + 1; //to improve performance
+            LinkedListNode<Task> currTask = currList.First;
+            while(currTask != null)
             {
-                for (int j = 1; j < noOfThingsToDoInEachTask + 1; j++)
+                for (int j = 1; j < noOfThingsToDoInEachTaskPlus1; j++)
                 {
-                    arr[i, j] = Math.Max(arr[i - 1, j], arr[i, j - 1]) + task.subtasks[j - 1];
+                    arr[i, j] = Math.Max(arr[i - 1, j], arr[i, j - 1]) + currTask.Value.subtasks[j - 1];
                 }
                 
                 i++;
+                currTask = currTask.Next;
             }
 
             return arr[i - 1, noOfThingsToDoInEachTask];
