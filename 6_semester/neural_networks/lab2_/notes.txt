@@ -1,0 +1,75 @@
+Klasyfikacja za pomocą sieci asocjacyjnej (Żurada strona 200):
+
+Z = {s^i, f^i)}^R 
+
+s^i = litery
+
+
+s^i należy do R^n
+f^i należy do R^R // wzorce
+
+(35 liter)
+
+f^1 = 1,0,...,0
+f^2 = 0,1,...,0
+
+Na wejściu dostajemy litere, na wyjściu dostaniemy wektor wartości - każda wartość pokazuje podobieństwo do każdej litery - jeśli chcemy rozpoznać konkretną literę szukamy max wartości
+
+Schemat z Żurady:
+najpierw sumator z wagami tak jak w poprzedniej sieci, potem szumany najlepszego rozwiązania średniokwadratowego
+
+f^1 = W * s^1
+f^2 = W * s^2
+....
+f^R = W * s^R
+
+i-ty warunek może być zapisany jako:
+	y^i = W * x^i
+	
+	f_1^i = W_(1,1:n)*s^i
+	f_2^i = W_(2,1:n)*s^i
+	...
+	
+
+	-----
+
+Dla wyznaczenia wiersza W_(R:n??) korzystamy ze wszystkich R warunków interpolacyjnych
+	f^i_n = W_(k, 1:n)*s^1
+	....
+	f^R_K = W_(k, 1:n)*s^R
+	
+
+	
+W = F ( S^T * S )^-1*S
+F = [f^1, f^2, ..., f^R]
+s = [s^1, s^2, ..., s^R]
+
+
+porównać to z klasyfikatorem minimalnoodległościowym
+
+(mają być 2 litery jako 1 zbiór - małe i wielkie litery, czyli np. "a" i "A" będą rozpoznawane tak samo jako litera "a=A" (jak coś to można to olać)                 
+
+KONIEC CZĘŚĆI 1
+--------------------------------------------------------------
+
+Część 2:
+Zmniejszmy rozmiar wektorów s (ze 100) - redukcja wymiarowości:
+
+METODA PCA (Principial Component Analysis)
+THEORETICAL SHIT (probably useless)
+{
+	Rozpatrzmy tablicę idealnych X=[X_i,j],  gdzie
+		i=1,...,n(n=100 u nas)
+		j=1,...,R
+		
+		(ZAMIENIC W TABLICY 0 na -1 -> żeby zakres był [-1, 1])
+		
+	Zadanie: Wyznaczyć kombinację liniową a=[a_1,...,a_R]^T transormującą macierz X = do postaci y = X*a - tak, aby utworzony nowy wektor y miał maksymalną wariancję - czyli, żeby kryterium 
+		K(a) = Sum(from i=0 to n){y_i)^2 = y^T*y = (X*a)^T(X*a) przyjmowało wartość maksymalną (czyli maxymalizujemy wariancję)
+		
+	Innymi słowy z kolumn macierzy X_(n*R) chcemy otrzymać nową kolumnę y_(n x 1) = X*a, aby R_y miała maksymalną wariancję:
+		S_n^2 = 1/R * y^T * y = max (s^2(a)), anależy do R^R, abs(a) == 1 (a = 1 or a = -1)
+		
+	Wariancja nowoutworzonej zmienniej zapisue się jako:
+		S_y^2 = 1/n * (X*a)^T*X*a = a^T*S*a, gdzie S=1/n*X^T*X jest macierzą kowariancji
+}
