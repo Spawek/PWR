@@ -41,26 +41,37 @@ namespace lab2_NEH
             int[,] arr = new int[currList.Count + 1, taskToInsert.subtasks.Count + 1];
             //Object bestValChangeLock = new object();
 
-            LinkedListNode<Task> bestPosToInsertBefore = null;
-            int bestPosCMax = int.MaxValue;
-
+            //LinkedListNode<Task> bestPosToInsertBefore = null;
+            //int bestPosCMax = int.MaxValue;
             //foreach (Task task in currList)
-            ////Parallel.ForEach(currList, task => //gives bad results
             //{
             //    LinkedList<Task> tempList = new LinkedList<Task>(currList); //linked list copying in here - low performance action //doesnt look so bad after performance analysis
             //    LinkedListNode<Task> nodeToInsertBefore = tempList.Find(task); //linear complexity - bad!!!
             //    tempList.AddBefore(nodeToInsertBefore, taskToInsert);
-            //    //lock (bestValChangeLock)
-            //    //{
             //    int currCMax = CalcCMaxforPermutation(tempList);
             //    if (currCMax < bestPosCMax)
             //    {
             //        bestPosCMax = currCMax;
             //        bestPosToInsertBefore = nodeToInsertBefore;
             //    }
-            //    //}
-            //}//);
+            //}
+            //LinkedList<Task> tempList2 = new LinkedList<Task>(currList); //refactor this "2" shit
+            //LinkedListNode<Task> nodeToInsertAfter = tempList2.Last;
+            //tempList2.AddAfter(nodeToInsertAfter, taskToInsert);
+            //int currCMax2 = CalcCMaxforPermutation(tempList2);
+            //if (currCMax2 < bestPosCMax)
+            //{
+            //    currList.AddAfter(currList.Find(nodeToInsertAfter.Value), taskToInsert);
+            //}
+            //else
+            //{
+            //    currList.AddBefore(currList.Find(bestPosToInsertBefore.Value), taskToInsert);
+            //}
 
+
+
+            LinkedListNode<Task> bestPosToInsertBefore = null;
+            int bestPosCMax = int.MaxValue;
             LinkedListNode<Task> node = currList.First; //DOESNT WORK FOR SOME REASON  - will be much faster
             while (node != null)
             {
@@ -71,16 +82,14 @@ namespace lab2_NEH
                     bestPosCMax = currCMax;
                     bestPosToInsertBefore = node;
                 }
-                var nextNode = node.Next;
-                currList.Remove(node);
-                node = nextNode;
+                currList.Remove(taskToInsert);
+                node = node.Next;
             }
             currList.AddLast(taskToInsert);
             int currCMax2 = CalcCMaxforPermutation(currList);
-            if (currCMax2 > bestPosCMax)
+            if (currCMax2 >= bestPosCMax)
             {
                 currList.RemoveLast();
-                Console.WriteLine(taskToInsert.taskNo);
                 currList.AddBefore(bestPosToInsertBefore, taskToInsert);
             }
         }
@@ -124,8 +133,9 @@ namespace lab2_NEH
             {
                 for (int j = 1; j < noOfThingsToDoInEachTaskPlusOne; j++)
                 {
-                    int maxTime = arr[j - 1] > arr[j] ? arr[j - 1] : arr[j];
-                    arr[j] = maxTime + currNode.Value.subtasks[j - 1];
+                    //int maxTime = arr[j - 1] > arr[j] ? arr[j - 1] : arr[j];
+                    //arr[j] = maxTime + currNode.Value.subtasks[j - 1];
+                    arr[j] = Math.Max(arr[j - 1], arr[j]) + currNode.Value.subtasks[j - 1];
                 }
                 currNode = currNode.Next;
             }
@@ -163,10 +173,11 @@ namespace lab2_NEH
 
         static void Main(string[] args)
         {
-
             List<LinkedList<Task>> jobs = LoadDataFromFile("bench_fs.txt");
             //int jobNo = 1;
             DateTime startTime = DateTime.Now;
+
+
             //foreach (LinkedList<Task> tasks in jobs)
             Parallel.For(0, jobs.Count, i =>
             {
@@ -183,7 +194,8 @@ namespace lab2_NEH
                     orderedTasks.RemoveFirst();
                 }
 
-                Console.WriteLine("JOB NO: {0}", i+1);
+                Console.WriteLine("JOB NO: {0}", i + 1);
+                //Console.WriteLine("JOB NO: {0}", jobNo++);
                 Console.WriteLine("Time elapsd: {0}", DateTime.Now - startTime);
                 Console.WriteLine("C_Max = {0}", CalcCMaxforPermutation(correctPermutation));
                 //Console.WriteLine();
