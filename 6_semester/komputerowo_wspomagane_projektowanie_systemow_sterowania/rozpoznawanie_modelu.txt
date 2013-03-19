@@ -1,0 +1,41 @@
+Identyfikacja funkcj¹ model_recogniser.m (napisn¹ na sterowanie procesami ci¹g³ymi)
+
+Przyk³adowe odpalenie:
+[ Twew, Tgsr ] = Spawek_ch_dyn(0, 0, 1, 1, 0, 0, 0) %mamy dane
+model_recogniser(Twew.signals.values-20, Twew.time) %mamy Twew(Tzew)
+model_recogniser(Tgsr.signals.values-70, Tgsr.time) %mamy Tgsr(Tzew)
+
+
+Kompfmooler:
+Twew(Tzew):
+Recognised parts in model:
+   Inertional part:
+      Tp = 46
+      transmittance:
+        numerator:   0.63411
+        denominator:   46s + 1
+   
+		
+TGsr(Tzew):
+Recognised parts in model:
+   Inertional part:
+      Tp = 62
+      transmittance:
+        numerator:   0.18069
+        denominator:   62s + 1
+   	
+
+Twew(Tgz):
+Recognised parts in model:
+   Inertional part:
+      Tp = 62
+      transmittance:
+        numerator:   0.36138
+        denominator:   62s + 1
+   
+Recognised parts in model:
+   Inertional part:
+      Tp = 34
+      transmittance:
+        numerator:   0.81705
+        denominator:   34s + 1
