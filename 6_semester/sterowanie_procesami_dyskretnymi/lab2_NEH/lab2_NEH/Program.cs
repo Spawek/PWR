@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace lab2_NEH
 {
@@ -39,7 +40,6 @@ namespace lab2_NEH
         static void InsertTaskToGetLowestCMax(LinkedList<Task> currList, Task taskToInsert)
         {
             int[,] arr = new int[currList.Count + 1, taskToInsert.subtasks.Count + 1];
-            //Object bestValChangeLock = new object();
 
             //LinkedListNode<Task> bestPosToInsertBefore = null;
             //int bestPosCMax = int.MaxValue;
@@ -121,20 +121,17 @@ namespace lab2_NEH
         //    return arr[i - 1, noOfThingsToDoInEachTask];
         //}
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CalcCMaxforPermutation(LinkedList<Task> currList)
         {
             int[] arr = new int[currList.First().subtasks.Count + 1];
             int noOfThingsToDoInEachTaskPlusOne = currList.First().subtasks.Count + 1;
 
-
-            //foreach (Task task in currList)
             LinkedListNode<Task> currNode = currList.First;
             while(currNode != null)
             {
                 for (int j = 1; j < noOfThingsToDoInEachTaskPlusOne; j++)
                 {
-                    //int maxTime = arr[j - 1] > arr[j] ? arr[j - 1] : arr[j];
-                    //arr[j] = maxTime + currNode.Value.subtasks[j - 1];
                     arr[j] = Math.Max(arr[j - 1], arr[j]) + currNode.Value.subtasks[j - 1];
                 }
                 currNode = currNode.Next;
@@ -174,11 +171,15 @@ namespace lab2_NEH
         static void Main(string[] args)
         {
             List<LinkedList<Task>> jobs = LoadDataFromFile("bench_fs.txt");
-            //int jobNo = 1;
+            List<List<int>> permutations = new List<List<int>>(jobs.Count);
+            for (int i = 0; i < jobs.Count; i++)
+            {
+                permutations.Add(new List<int>(jobs[i].Count));
+            }
+
             DateTime startTime = DateTime.Now;
+            
 
-
-            //foreach (LinkedList<Task> tasks in jobs)
             Parallel.For(0, jobs.Count, i =>
             {
                 //LinkedList<Task> orderedTasks = new LinkedList<Task>(tasks.OrderBy(x => -1 * x.subtasks.Sum()));
@@ -195,25 +196,32 @@ namespace lab2_NEH
                 }
 
                 Console.WriteLine("JOB NO: {0}", i + 1);
-                //Console.WriteLine("JOB NO: {0}", jobNo++);
                 Console.WriteLine("Time elapsd: {0}", DateTime.Now - startTime);
-                Console.WriteLine("C_Max = {0}", CalcCMaxforPermutation(correctPermutation));
-                //Console.WriteLine();
-                //foreach (Task task in correctPermutation)
-                //{
-                //    Console.Write(task.taskNo + " ");
-                //}
+                //Console.WriteLine("C_Max = {0}", CalcCMaxforPermutation(correctPermutation));
+                Console.WriteLine();
+                foreach (Task task in correctPermutation)
+                {
+                    //Console.Write(task.taskNo + " ");
+                    permutations[i].Add(task.taskNo);
+                }
                 Console.WriteLine("\n");
 
             });
+
+            using (StreamWriter sw = new StreamWriter("output.txt"))
+            {
+                foreach (var item in permutations)
+                {
+                    foreach (var no in item)
+                    {
+                        sw.Write(" " + no);
+                    }
+                    sw.WriteLine();
+                }
+            }
+
+            Console.WriteLine("Click any key to exit...");
             Console.ReadKey();
-            //LinkedList<Task> tasks = new LinkedList<Task>();
-
-            //tasks.AddLast(new Task(new List<int>() { 2, 1, 3 }));
-            //tasks.AddLast(new Task(new List<int>() { 4, 1, 5 }));
-            //tasks.AddLast(new Task(new List<int>() { 2, 3, 2 }));
-            //tasks.AddLast(new Task(new List<int>() { 1, 4, 4 }));
-
         }
     }
 }
