@@ -49,13 +49,16 @@ porównać to z klasyfikatorem minimalnoodległościowym
 
 (mają być 2 litery jako 1 zbiór - małe i wielkie litery, czyli np. "a" i "A" będą rozpoznawane tak samo jako litera "a=A" (jak coś to można to olać)                 
 
-KONIEC CZĘŚĆI 1
+TYLKO DO TĄD MAMY ROBIĆ
+
+KONIEC CZĘŚCI 1
 --------------------------------------------------------------
 
 Część 2:
 Zmniejszmy rozmiar wektorów s (ze 100) - redukcja wymiarowości:
 
 METODA PCA (Principial Component Analysis)
+METODA PCA_bartkowiak (podglądnięte) <
 THEORETICAL SHIT (probably useless)
 {
 	Rozpatrzmy tablicę idealnych X=[X_i,j],  gdzie
@@ -73,3 +76,4 @@ THEORETICAL SHIT (probably useless)
 	Wariancja nowoutworzonej zmienniej zapisue się jako:
 		S_y^2 = 1/n * (X*a)^T*X*a = a^T*S*a, gdzie S=1/n*X^T*X jest macierzą kowariancji
 }
+
