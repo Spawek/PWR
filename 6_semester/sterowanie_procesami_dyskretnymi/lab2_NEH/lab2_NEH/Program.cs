@@ -9,32 +9,136 @@ using System.Runtime.CompilerServices;
 
 namespace lab2_NEH
 {
+    public class Task
+    {
+        public List<int> subtasks;
+        public int taskNo;
+        public static int maxNo = 0;
+
+        public Task(List<int> _subtasks)
+        {
+            subtasks = _subtasks;
+
+            taskNo = ++maxNo;
+        }
+
+        public Task()
+        {
+            subtasks = new List<int>();
+
+            taskNo = ++maxNo;
+        }
+
+        public static void ResetTaskCounter()
+        {
+            maxNo = 0;
+        }
+    }
+
     public class Program
     {
-        public class Task
+        static void InsertTaskToGetLowestCMaxAccelerated(LinkedList<Task> currList, Task taskToInsert)
         {
-            public List<int> subtasks;
-            public int taskNo;
-            public static int maxNo = 0;
+            int[,] E = CalcEArr(currList);
+            int[,] Q = CalcQArr(currList);
+            int[,] F = CalcFArr(E, taskToInsert);
+            int[,] FPlusQ = AddArrays(F, Q);
+            int minCol = FindMinColInFPlusQArr(FPlusQ);
 
-            public Task(List<int> _subtasks)
+            if (minCol == currList.Count)
             {
-                subtasks = _subtasks;
+                currList.AddLast(taskToInsert);
+            }
+            else
+            {
+                currList.AddBefore(currList.Find(currList.ElementAt(minCol)), taskToInsert); //could be done faster but its not important
+            }
+        }
 
-                taskNo = ++maxNo;
+        public static int FindMinColInFPlusQArr(int[,] FPlusQ)
+        {
+            int minVal = int.MaxValue;
+            int minCol = 0;
+            for (int i = 0; i < FPlusQ.GetLength(0); i++)
+            {
+                int maxValInCol = int.MinValue;
+                for (int j = 0; j < FPlusQ.GetLength(1); j++)
+                {
+                    maxValInCol = FPlusQ[i, j] > maxValInCol ? FPlusQ[i, j] : maxValInCol;
+                }
+                if (maxValInCol < minVal)
+                {
+                    minVal = maxValInCol;
+                    minCol = i;
+                }
             }
 
-            public Task()
-            {
-                subtasks = new List<int>();
+            return minCol;
+        }
 
-                taskNo = ++maxNo;
+        public static int[,] AddArrays(int[,] F, int[,] Q)
+        {
+            int[,] FPlusQ = new int[F.GetLength(0), F.GetLength(1)];
+            for (int i = 0; i < F.GetLength(0); i++)
+			{
+                for (int j = 0; j < F.GetLength(1)-1; j++)
+                {
+                   FPlusQ[i,j] = F[i,j+1] + Q[i,j];
+                }
+			}
+
+            return FPlusQ;
+        }
+
+        public static int[,] CalcFArr(int[,] E, Task taskToInsert)
+        {
+            int[,] F = new int[E.GetLength(0), E.GetLength(1)];
+            for (int i = 0; i < E.GetLength(0); i++)
+			{
+                for (int j = 1; j < E.GetLength(1); j++)
+			    {
+                    F[i, j] = Math.Max(F[i, j - 1], E[i, j]) + taskToInsert.subtasks[j - 1];
+	    		}
+			}
+
+            return F;
+        }
+
+        public static int[,] CalcEArr(LinkedList<Task> currList)
+        {
+            int tasksNo = currList.Count;
+            int subtasksNo = currList.First().subtasks.Count;
+
+            //calc E arr
+            int[,] E = new int[tasksNo + 1, subtasksNo + 1];
+            var currTask = currList.First;
+            for (int i = 1; i < tasksNo + 1; i++, currTask = currTask.Next)
+            {
+                for (int j = 1; j < subtasksNo + 1; j++)
+                {
+                    E[i, j] = Math.Max(E[i - 1, j], E[i, j - 1]) + currTask.Value.subtasks[j - 1];
+                }
             }
 
-            public static void ResetTaskCounter()
+            return E;
+        }
+
+        public static int[,] CalcQArr(LinkedList<Task> currList)
+        {
+            int tasksNo = currList.Count;
+            int subtasksNo = currList.First().subtasks.Count;
+
+            int[,] Q = new int[tasksNo + 1, subtasksNo + 1];
+            var currTask = currList.Last;
+            for (int i = tasksNo - 1; i >= 0; i--, currTask = currTask.Previous)
             {
-                maxNo = 0;
+                for (int j = subtasksNo - 1; j >= 0; j--)
+                {
+                    Q[i, j] = Math.Max(Q[i + 1, j], Q[i, j + 1]) + currTask.Value.subtasks[j];
+                }
             }
+
+            return Q;
         }
 
         static void InsertTaskToGetLowestCMax(LinkedList<Task> currList, Task taskToInsert)
@@ -191,7 +295,8 @@ namespace lab2_NEH
 
                 while (orderedTasks.Count > 0)
                 {
-                    InsertTaskToGetLowestCMax(correctPermutation, orderedTasks.First());
+                    //InsertTaskToGetLowestCMax(correctPermutation, orderedTasks.First());
+                    InsertTaskToGetLowestCMaxAccelerated(correctPermutation, orderedTasks.First());
                     orderedTasks.RemoveFirst();
                 }
 
