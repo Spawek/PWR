@@ -144,36 +144,6 @@ namespace lab2_NEH
         static void InsertTaskToGetLowestCMax(LinkedList<Task> currList, Task taskToInsert)
         {
             int[,] arr = new int[currList.Count + 1, taskToInsert.subtasks.Count + 1];
-
-            //LinkedListNode<Task> bestPosToInsertBefore = null;
-            //int bestPosCMax = int.MaxValue;
-            //foreach (Task task in currList)
-            //{
-            //    LinkedList<Task> tempList = new LinkedList<Task>(currList); //linked list copying in here - low performance action //doesnt look so bad after performance analysis
-            //    LinkedListNode<Task> nodeToInsertBefore = tempList.Find(task); //linear complexity - bad!!!
-            //    tempList.AddBefore(nodeToInsertBefore, taskToInsert);
-            //    int currCMax = CalcCMaxforPermutation(tempList);
-            //    if (currCMax < bestPosCMax)
-            //    {
-            //        bestPosCMax = currCMax;
-            //        bestPosToInsertBefore = nodeToInsertBefore;
-            //    }
-            //}
-            //LinkedList<Task> tempList2 = new LinkedList<Task>(currList); //refactor this "2" shit
-            //LinkedListNode<Task> nodeToInsertAfter = tempList2.Last;
-            //tempList2.AddAfter(nodeToInsertAfter, taskToInsert);
-            //int currCMax2 = CalcCMaxforPermutation(tempList2);
-            //if (currCMax2 < bestPosCMax)
-            //{
-            //    currList.AddAfter(currList.Find(nodeToInsertAfter.Value), taskToInsert);
-            //}
-            //else
-            //{
-            //    currList.AddBefore(currList.Find(bestPosToInsertBefore.Value), taskToInsert);
-            //}
-
-
-
             LinkedListNode<Task> bestPosToInsertBefore = null;
             int bestPosCMax = int.MaxValue;
             LinkedListNode<Task> node = currList.First; //DOESNT WORK FOR SOME REASON  - will be much faster
@@ -197,33 +167,6 @@ namespace lab2_NEH
                 currList.AddBefore(bestPosToInsertBefore, taskToInsert);
             }
         }
-
-        /// <summary>
-        /// create arr and return last elem (CMax)
-        /// </summary>
-        /// <param name="currList"></param>
-        /// <returns></returns>
-        //private static int CalcCMaxforPermutation(LinkedList<Task> currList)
-        //{
-        //    int noOfThingsToDoInEachTask = currList.First().subtasks.Count;
-        //    int[,] arr = new int[currList.Count + 1, noOfThingsToDoInEachTask + 1];
-
-        //    int i = 1;
-        //    int noOfThingsToDoInEachTaskPlus1 = noOfThingsToDoInEachTask + 1; //to improve performance
-        //    LinkedListNode<Task> currTask = currList.First;
-        //    while(currTask != null)
-        //    {
-        //        for (int j = 1; j < noOfThingsToDoInEachTaskPlus1; j++)
-        //        {
-        //            arr[i, j] = Math.Max(arr[i - 1, j], arr[i, j - 1]) + currTask.Value.subtasks[j - 1];
-        //        }
-                
-        //        i++;
-        //        currTask = currTask.Next;
-        //    }
-
-        //    return arr[i - 1, noOfThingsToDoInEachTask];
-        //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CalcCMaxforPermutation(LinkedList<Task> currList)
@@ -305,7 +248,7 @@ namespace lab2_NEH
                 //Console.WriteLine("C_Max = {0}", CalcCMaxforPermutation(correctPermutation));
                 Console.WriteLine();
                 foreach (Task task in correctPermutation)
-                {
+                {   
                     //Console.Write(task.taskNo + " ");
                     permutations[i].Add(task.taskNo);
                 }
