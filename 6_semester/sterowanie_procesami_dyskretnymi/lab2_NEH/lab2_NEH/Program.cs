@@ -307,7 +307,7 @@ namespace lab2_NEH
                 Console.WriteLine();
 
                 foreach (Task task in correctPermutation)
-                {
+                {   
                     //Console.Write(task.taskNo + " ");
                     permutations[i].Add(task.taskNo);
                 }
