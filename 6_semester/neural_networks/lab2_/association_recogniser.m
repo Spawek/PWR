@@ -1,4 +1,4 @@
-function [ recognised_letter] = asociation_recogniser( letter )
+function [ recognised_letter] = association_recogniser( letter )
 
     % get output vector
     y = calc_weights_matrix(load_letters_definitions) * letter;
