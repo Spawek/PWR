@@ -1,5 +1,5 @@
 function [ weights_matrix] = calc_weights_matrix( letters )
-global F
+
     % F matrix is eye matrix for now coz i have 
     % just 1 pattern for each letter
     F = eye(35);

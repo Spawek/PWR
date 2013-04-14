@@ -1,7 +1,7 @@
 letters = load_letters_definitions();
 
 
-tries_per_letter = 50;
+tries_per_letter = 300;
 avg_tries_per_letter = zeros(size(letters,2),1);
 weights = calc_weights_matrix(load_letters_definitions);
 for letter_no = 1:size(letters,2)
