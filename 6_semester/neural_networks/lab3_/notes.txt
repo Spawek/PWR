@@ -1,0 +1,52 @@
+Klasyfikator asocjacyjny typu RBF:
+
+Przypomnienie:
+	szukany takiego a = [a_1, ..., a_n], że dla:
+	
+	X=[s^1', s^2', ..., s^R']' //dane
+	
+	y = Xa, że y będzie miało max wariancję:
+		
+		max (s_y)^2(a) , dla a należącego do R^n, ||a|| = 1
+		
+		(s_y)^2 = 1/R * y'*y = (Xa)'*(Xa) = u'*S*a
+		S = 1/R X' X //po prostu macierz kowariancji?
+		
+		istnieje n rozwiązań - są nimi wektory własne macierzy S:
+			(S - delta I)*a = 0
+			
+		możemy uporządkować wartości własne tak, że
+		x_1 >= x_2 >= ... >= x_n >= 0
+		
+		A = [a_1, a_2, ..., a_n] //wektory a (po 1 dla każdej wartości własnej)
+		//macierz A jest unitarna
+		
+		//zmienność macierzy w pierwszym wymiarze jest największa, w każdym kolejnym coraz mniejsza (nie jestem pewien czy chodzi o macierz A)
+		
+		Y = XA
+		
+RESZTA JEST NA STRONIE BAZANA W "pca_klasyfikacja.pdf"
+
+mamy wyznaczyć parametr P - jaka część wariancji źródła pozostałą po transformacji
+
+wyznaczanie wartości własnych: funkcja "eig(macierz)"
+
+Zrobić na tym 2 poprzednie listy!
+
+-----------------------
+ASOCJATOR NA SIECIACH RBF:
+
+Klasyfikacja za pomocą asocjatora RBF:
+	oznaczenia:
+		
+		fi(x) = e^(-(x/r)^2)
+		r = diam(X)/k, k=1,2,3,...
+		diam(X) - odległość między najbardziej oddalonymi punktami w zbiorze danych
+		//r wygląda jak funkcja Gaussa
+		
+		schemat sieci:
+			propagujemy x[1:n] do ||s^n-x|| (pomiarów odległości)
+			z każdego pomiaru odległości dajemy to do pojedynczego fi(val)
+			potem propagujemy przemnożone przez macierz wag do sumatorów
+			
+		
