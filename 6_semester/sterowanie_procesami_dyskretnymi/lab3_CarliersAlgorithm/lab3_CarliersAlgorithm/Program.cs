@@ -38,11 +38,6 @@ namespace lab3_CarliersAlgorithm
             Q = _Q;
             no = nextNo++;
         }
-
-        public void resetNextNo()
-        {
-            nextNo = 1;
-        }
     }
 
     public class Program
@@ -68,56 +63,87 @@ namespace lab3_CarliersAlgorithm
             return task;
         }
 
-        /// <summary>
-        /// basing on:
-        /// http://dominik.zelazny.staff.iiar.pwr.wroc.pl/materialy/Algorytm_Schrage.pdf
-        /// </summary>
-        /// <param name="N">unordered tasks</param>
-        /// <returns>pair(ordered tasks, cmax)</returns>
         public static KeyValuePair<List<Task>, int> ShrageOrdering(List<Task> inputData)
         {
             int t = 0;
             int CMax = 0;
-            List<Task> N = new List<Task>(inputData);
-            List<Task> G = new List<Task>(N.Count);
+            Heap<Task> N = new Heap<Task>((x,y) => x.R > y.R);
+            N.Insert(inputData);
+            Heap<Task> G = new Heap<Task>((x, y) => x.Q < y.Q);
             List<Task> orderedTasks = new List<Task>(N.Count);
 
             while (G.Count != 0 || N.Count != 0)
             {
-                int minVal;
-                Task e;
-                while (N.Count != 0 && (minVal = N.Min(x => x.R)) <= t)
+                while (N.Count != 0 && N.ShowLast().R <= t)
                 {
-                    e = N.Find(x => x.R == minVal);
-                    G.Add(e);
-                    N.Remove(e);
+                    G.Insert(N.ExtractLast());
                 }
-                if(G.Count == 0)
+                if (G.Count == 0)
                 {
-                    t = N.Min(x => x.R);
-                    continue;
+                    t = N.ShowLast().R;
                 }
-                int maxVal = G.Max(x => x.Q);
-                e = G.Find(task => task.Q == maxVal); 
-                orderedTasks.Add(e);
-                t += e.P;
-                CMax = Math.Max(CMax, t + e.Q);
-                G.Remove(e);
+                else
+                {
+                    Task e = G.ExtractLast();
+                    orderedTasks.Add(e);
+                    t += e.P;
+                    CMax = Math.Max(CMax, t + e.Q);
+                }
             }
 
 
-            return new KeyValuePair<List<Task>,int>(orderedTasks, CMax);
+            return new KeyValuePair<List<Task>, int>(orderedTasks, CMax);
         }
 
         /// <summary>
         /// basing on:
         /// http://dominik.zelazny.staff.iiar.pwr.wroc.pl/materialy/Algorytm_Schrage.pdf
         /// </summary>
-        /// <param name="N">unordered tasks</param>
-        /// <returns>pair(ordered tasks, cmax)</returns>
-        public static KeyValuePair<List<Task>, int> PrmtShrageOrdering(List<Task> inputData)
+        /// <param name="N">unordered tasks - IT CHANGES THIS DATA!</param>
+        /// <returns>C_Max</returns>
+        public static int PrmtShrageOrdering(List<Task> inputData)
         {
-            throw new NotImplementedException();
+            int t = 0;
+            int CMax = 0;
+            Heap<Task> N = new Heap<Task>((x, y) => x.R > y.R);
+            N.Insert(inputData);
+            Heap<Task> G = new Heap<Task>((x, y) => x.Q < y.Q);
+            Task e;
+            Task l = new Task(0, 0, int.MaxValue);
+
+            while (G.Count != 0 || N.Count != 0)
+            {
+                while (N.Count != 0 && N.ShowLast().R <= t)
+                {
+                    e = N.ExtractLast();
+                    G.Insert(e);
+
+                    if (e.Q > l.Q)
+                    {
+                        l.P = t - e.R;
+                        t = e.R;
+                    }
+
+                    if (l.P > 0)
+                    {
+                        G.Insert(l);
+                    }
+                }
+
+                if (G.Count == 0)
+                {
+                    t = N.ShowLast().R;
+                }
+                else
+                {
+                    e = G.ExtractLast();
+                    l = e;
+                    t += e.P;
+                    CMax = Math.Max(CMax, t + e.Q);
+                }
+            }
+
+            return CMax;
         }
 
         static void Main(string[] args)

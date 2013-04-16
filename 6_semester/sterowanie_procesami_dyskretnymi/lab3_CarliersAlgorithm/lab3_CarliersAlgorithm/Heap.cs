@@ -29,6 +29,14 @@ namespace lab3_CarliersAlgorithm
             return last;
         }
 
+        public T ShowLast()
+        {
+            if (data.Count < 0)
+                throw new ApplicationException("heap is empty");
+
+            return data[0];
+        }
+
         private void Heapify(int i)
         {
             int smallest;
@@ -71,6 +79,14 @@ namespace lab3_CarliersAlgorithm
             data[i] = o;
         }
 
+        public void Insert(IEnumerable<T> collection)
+        {
+            foreach (var item in collection)
+            {
+                Insert(item);
+            }
+        }
+
         public int Count
         {
             get { return data.Count; }
@@ -90,6 +106,20 @@ namespace lab3_CarliersAlgorithm
             {
                 heap.Insert(val);
             }
+
+            foreach (int val in data.OrderBy(x => x))
+            {
+                Assert.AreEqual(val, heap.ExtractLast());
+            }
+        }
+
+        [TestMethod]
+        public void InsertCollectionTest()
+        {
+            Heap<int> heap = new Heap<int>((x, y) => x > y);
+
+            int[] data = new int[] { 5, 3, 7, 84, 4, 2, 5, 432, 23, 432, 4, 32, 5, 62, 621, 1, 1, 1, 1, 5, -5432, 7 };
+            heap.Insert(data);
 
             foreach (int val in data.OrderBy(x => x))
             {
