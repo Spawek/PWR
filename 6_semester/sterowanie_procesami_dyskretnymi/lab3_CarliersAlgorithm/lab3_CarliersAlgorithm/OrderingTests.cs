@@ -28,5 +28,14 @@ namespace lab3_CarliersAlgorithm
             //Assert.AreEqual(1492, CMax); //from "wyniki.txt" //its not that!!!
             Assert.Inconclusive();
         }
+
+        [TestMethod]
+        public void ShrageStarTest()
+        {
+            var inputData = Program.LoadData("in50.txt");
+            int CMax = Program.PrmtShrageOrdering(inputData);
+
+            Assert.AreEqual(1492, CMax); //from "wyniki.txt" 
+        }
     }
 }
