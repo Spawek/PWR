@@ -33,9 +33,9 @@ namespace lab3_CarliersAlgorithm
         public void ShrageStarTest()
         {
             var inputData = Program.LoadData("in50.txt");
-            int CMax = Program.PrmtShrageOrdering(inputData);
+            var computedData = Program.ShrageStarOrdering(inputData);
 
-            Assert.AreEqual(1492, CMax); //from "wyniki.txt" 
+            Assert.AreEqual(1492, computedData.Value); //from "wyniki.txt" 
         }
     }
 }

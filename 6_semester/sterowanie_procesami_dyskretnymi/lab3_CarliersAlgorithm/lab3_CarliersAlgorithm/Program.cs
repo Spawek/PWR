@@ -29,7 +29,6 @@ namespace lab3_CarliersAlgorithm
         public int Q;
 
         public int P_left;
-        public int l;
         
         /// <summary>
         /// list(start time, end time) showing when work on obj was done
@@ -47,8 +46,7 @@ namespace lab3_CarliersAlgorithm
             Q = _Q;
 
             P_left = P;
-            l = 0;
-
+            
             no = nextNo++;
         }
     }
@@ -177,15 +175,15 @@ namespace lab3_CarliersAlgorithm
             List<Task> U = new List<Task>();
             Task k = null;
             int t = N.Min(x => x.R);
-            List<Task> Q = N.Where(x => x.R < t).ToList();
+            List<Task> Q = N.Where(x => x.R <= t).ToList();
             List<Task> notDoneTasks = new List<Task>(N);
 
-            i2:
+            i2: //GOTO!!!! (HELL)
             if (k != null)
             {
                 if (k.workTime.Count != 0)
                 {
-                    if (k.workTime[k.l].Value < t)
+                    if (k.workTime[k.workTime.Count - 1].Value < t)
                     {
                         k.P = 0;
                         U.Add(k);
@@ -202,24 +200,31 @@ namespace lab3_CarliersAlgorithm
             if (j.Q <= k.Q) goto i8;
 
             Q.Add(k);
-            k.workTime[k.l] = new KeyValuePair<int, int>(k.workTime[k.l].Key, t); //value cannot be changed ;/
+            k.workTime[k.workTime.Count - 1] = new KeyValuePair<int, int>(k.workTime[k.workTime.Count - 1].Key, t); //value cannot be changed ;/
+            k.P_left -= t - k.workTime[k.workTime.Count - 1].Key;
             k = null;
-            k.P_left -= t - k.workTime[k.l].Key;
 
             i7:
             k = j;
-            k.l++;
-            k.workTime[k.l] = new KeyValuePair<int, int>(t, t + k.P_left);
+            k.workTime.Add(new KeyValuePair<int, int>(t, t + k.P_left));
             Q.Remove(k);
 
             i8:
-            t = Math.Max(k.workTime[k.l].Value, notDoneTasks.Min(x => x.R));
+            t = Math.Max(k.workTime[k.workTime.Count-1].Value, notDoneTasks.Min(x => x.R));
+
             Q.AddRange(notDoneTasks.Where(x => x.R <= t));
-            if(U is not equals to N)
-            goto i2;
+            Q = Q.Distinct().ToList();
 
+            if (Enumerable.SequenceEqual(U.OrderBy(x => x.no), N.OrderBy(x => x.no))) //TRAGIC COMPLEXITY
+            {
+                return new KeyValuePair<List<Task>, int>(null, t); //TODO: fix it!
+            }
+            else
+            {
+                goto i2;
+            }
 
-            throw new NotImplementedException();
+            throw new ApplicationException("you should not get here!");
         }
 
         static void Main(string[] args)
