@@ -49,6 +49,22 @@ namespace lab3_CarliersAlgorithm
             
             no = nextNo++;
         }
+
+        public Task(Task task)
+        {
+            R = task.R;
+            P = task.P;
+            Q = task.Q;
+
+            P_left = task.P_left;
+            no = task.no;
+
+            foreach (var item in task.workTime)
+            {
+                workTime.Add(new KeyValuePair<int, int>(item.Key, item.Value));
+            }
+            
+        }
     }
 
     public class Program
@@ -104,6 +120,7 @@ namespace lab3_CarliersAlgorithm
                 {
                     Task e = G.ExtractLast();
                     orderedTasks.Add(e);
+                    e.workTime.Add(new KeyValuePair<int, int>(t, t + e.P)); //should not impact tests //needed for Calier
                     t += e.P;
                     CMax = Math.Max(CMax, t + e.Q);
                 }
@@ -164,6 +181,87 @@ namespace lab3_CarliersAlgorithm
             return CMax;
         }
 
+        public static int PrmtShrageOrderingNotChagingInput(List<Task> inputData)
+        {
+            List<Task> inputDataCopy = new List<Task>(inputData.Count);
+
+            foreach (var item in inputData)
+            {
+                inputDataCopy.Add(new Task(item));
+            }
+
+            return PrmtShrageOrdering(inputDataCopy);
+        }
+
+
+        static int UB = int.MaxValue;
+        static List<Task> output;
+        /// <summary>
+        /// basing on:
+        /// http://dominik.zelazny.staff.iiar.pwr.wroc.pl/materialy/Algorytm_Carlier.pdf
+        /// </summary>
+        /// <param name="N">unordered tasks - IT CHANGES THIS DATA!</param>
+        /// <returns>pair(ordered tasks, CMax)</returns>
+        public static KeyValuePair<List<Task>, int> CaliersOrdering(List<Task> inputData)
+        {
+            var shrageOut = ShrageOrdering(inputData);
+            int U = shrageOut.Value;
+            if (U < UB)
+            {
+                UB = U;
+                output = shrageOut.Key;
+            }
+
+            Task B = output.FindLast(x => U == x.workTime.Last().Value + x.Q);
+            int BIndex = output.IndexOf(B);
+
+            Task A = output.Find(x =>
+                {
+                    int xIndex = output.IndexOf(x); //can be optimized
+                    return U == x.R + output.GetRange(xIndex, BIndex - xIndex + 1).Sum(y => y.P) + B.Q; //can be optimized
+                });
+            int AIndex = output.IndexOf(A);
+
+            Task C = output.GetRange(AIndex, BIndex - AIndex + 1).FindLast(x => x.Q < B.Q);
+            int CIndex = output.IndexOf(C);
+
+            if (C == null)
+                throw new ApplicationException("c not found :(");
+
+            //can be optimized easily
+            int MinRInRange = output.GetRange(CIndex + 1, BIndex - CIndex).Min(x => x.R); 
+            int MinQInRange = output.GetRange(CIndex + 1, BIndex - CIndex).Min(x => x.Q);
+            int PSumInRange = output.GetRange(CIndex + 1, BIndex - CIndex).Sum(x => x.P);
+
+            int oldRC = C.R;
+            C.R = Math.Max(C.R, MinRInRange + PSumInRange);
+
+            int LB = PrmtShrageOrderingNotChagingInput(output);
+
+            if (LB < UB)
+            {
+                CaliersOrdering(inputData); //TODO: INPORTANT:not sure if shouldnt be CaliersOutput instead of input data
+            }
+            C.R = oldRC;
+
+            int oldCQ = C.Q;
+            C.Q = Math.Max(C.Q, MinQInRange + PSumInRange);
+            if (LB < UB)
+            {
+                CaliersOrdering(inputData); //TODO: INPORTANT:not sure if shouldnt be CaliersOutput instead of input data
+            }
+            C.Q = oldCQ;
+
+            int CMax = 0;
+            int t = 0;
+            foreach (var item in output)
+            {
+                t = Math.Max(item.R, t) + item.P;
+                CMax = Math.Max(CMax, t + item.Q);
+            }
+            return new KeyValuePair<List<Task>, int>(output, CMax);
+        }
+
         static void Main(string[] args)
         {
             List<Task> tasks = LoadData("in100.txt");
@@ -173,7 +271,6 @@ namespace lab3_CarliersAlgorithm
 
             Console.ReadKey();
         }
-
 
     }
 }
