@@ -140,11 +140,11 @@ namespace lab3_CarliersAlgorithm
                     {
                         l.P = t - e.R;
                         t = e.R;
-                    }
 
-                    if (l.P > 0)
-                    {
-                        G.Insert(l);
+                        if (l.P > 0)
+                        {
+                            G.Insert(l);
+                        }
                     }
                 }
 
@@ -162,69 +162,6 @@ namespace lab3_CarliersAlgorithm
             }
 
             return CMax;
-        }
-
-        /// <summary>
-        /// basing on:
-        /// http://dominik.zelazny.staff.iiar.pwr.wroc.pl/materialy/fragment_Metoda_blokowa_w_zagadnieniach_szeregowania_zadan_-_Algorytm_Schrage_i_Przerywalnosc_zadan.pdf
-        /// </summary>
-        /// <param name="N">unordered tasks</param>
-        /// <returns>pair(ordered tasks, CMax)</returns>
-        public static KeyValuePair<List<Task>, int> ShrageStarOrdering(List<Task> N)
-        {
-            List<Task> U = new List<Task>();
-            Task k = null;
-            int t = N.Min(x => x.R);
-            List<Task> Q = N.Where(x => x.R <= t).ToList();
-            List<Task> notDoneTasks = new List<Task>(N);
-
-            i2: //GOTO!!!! (HELL)
-            if (k != null)
-            {
-                if (k.workTime.Count != 0)
-                {
-                    if (k.workTime[k.workTime.Count - 1].Value < t)
-                    {
-                        k.P = 0;
-                        U.Add(k);
-                        notDoneTasks.Remove(k);
-                        k = null;
-                    }
-                }
-            }
-
-            int maxQ = Q.Max(x => x.Q);
-            Task j = Q.Find(x => x.Q == maxQ);
-
-            if (k == null) goto i7;
-            if (j.Q <= k.Q) goto i8;
-
-            Q.Add(k);
-            k.workTime[k.workTime.Count - 1] = new KeyValuePair<int, int>(k.workTime[k.workTime.Count - 1].Key, t); //value cannot be changed ;/
-            k.P_left -= t - k.workTime[k.workTime.Count - 1].Key;
-            k = null;
-
-            i7:
-            k = j;
-            k.workTime.Add(new KeyValuePair<int, int>(t, t + k.P_left));
-            Q.Remove(k);
-
-            i8:
-            t = Math.Max(k.workTime[k.workTime.Count-1].Value, notDoneTasks.Min(x => x.R));
-
-            Q.AddRange(notDoneTasks.Where(x => x.R <= t));
-            Q = Q.Distinct().ToList();
-
-            if (Enumerable.SequenceEqual(U.OrderBy(x => x.no), N.OrderBy(x => x.no))) //TRAGIC COMPLEXITY
-            {
-                return new KeyValuePair<List<Task>, int>(null, t); //TODO: fix it!
-            }
-            else
-            {
-                goto i2;
-            }
-
-            throw new ApplicationException("you should not get here!");
         }
 
         static void Main(string[] args)
