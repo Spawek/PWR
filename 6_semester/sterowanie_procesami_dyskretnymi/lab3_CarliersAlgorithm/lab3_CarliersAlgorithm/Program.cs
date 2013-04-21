@@ -50,7 +50,7 @@ namespace lab3_CarliersAlgorithm
             no = nextNo++;
         }
 
-        public Task(Task task)
+        public Task(Task task, bool copyWorkTime = true)
         {
             R = task.R;
             P = task.P;
@@ -59,9 +59,12 @@ namespace lab3_CarliersAlgorithm
             P_left = task.P_left;
             no = task.no;
 
-            foreach (var item in task.workTime)
+            if (copyWorkTime)
             {
-                workTime.Add(new KeyValuePair<int, int>(item.Key, item.Value));
+                foreach (var item in task.workTime)
+                {
+                    workTime.Add(new KeyValuePair<int, int>(item.Key, item.Value));
+                }
             }
             
         }
@@ -120,12 +123,12 @@ namespace lab3_CarliersAlgorithm
                 {
                     Task e = G.ExtractLast();
                     orderedTasks.Add(e);
+                    e.workTime.Clear();
                     e.workTime.Add(new KeyValuePair<int, int>(t, t + e.P)); //should not impact tests //needed for Calier
                     t += e.P;
                     CMax = Math.Max(CMax, t + e.Q);
                 }
             }
-
 
             return new KeyValuePair<List<Task>, int>(orderedTasks, CMax);
         }
@@ -187,7 +190,7 @@ namespace lab3_CarliersAlgorithm
 
             foreach (var item in inputData)
             {
-                inputDataCopy.Add(new Task(item));
+                inputDataCopy.Add(new Task(item, false));
             }
 
             return PrmtShrageOrdering(inputDataCopy);
@@ -202,11 +205,11 @@ namespace lab3_CarliersAlgorithm
         /// </summary>
         /// <param name="N">unordered tasks - IT CHANGES THIS DATA!</param>
         /// <returns>pair(ordered tasks, CMax)</returns>
-        public static KeyValuePair<List<Task>, int> CaliersOrdering(List<Task> inputData)
+        public static KeyValuePair<List<Task>, int> CaliersOrdering(List<Task> input)
         {
-            var shrageOut = ShrageOrdering(inputData);
+            var shrageOut = ShrageOrdering(input);
             int U = shrageOut.Value;
-            if (U < UB)
+            //if (U < UB) //WTF?!?! after commending it algoritm started working correctly
             {
                 UB = U;
                 output = shrageOut.Key;
@@ -218,7 +221,7 @@ namespace lab3_CarliersAlgorithm
             Task A = output.Find(x =>
                 {
                     int xIndex = output.IndexOf(x); //can be optimized
-                    return U == x.R + output.GetRange(xIndex, BIndex - xIndex + 1).Sum(y => y.P) + B.Q; //can be optimized
+                    return UB == x.R + output.GetRange(xIndex, BIndex - xIndex + 1).Sum(y => y.P) + B.Q; //can be optimized //IMPORTANT: changed from UB
                 });
             int AIndex = output.IndexOf(A);
 
@@ -226,7 +229,9 @@ namespace lab3_CarliersAlgorithm
             int CIndex = output.IndexOf(C);
 
             if (C == null)
-                throw new ApplicationException("c not found :(");
+            {
+                return new KeyValuePair<List<Task>, int>(output, U);
+            }
 
             //can be optimized easily
             int MinRInRange = output.GetRange(CIndex + 1, BIndex - CIndex).Min(x => x.R); 
@@ -240,15 +245,16 @@ namespace lab3_CarliersAlgorithm
 
             if (LB < UB)
             {
-                CaliersOrdering(inputData); //TODO: INPORTANT:not sure if shouldnt be CaliersOutput instead of input data
+                CaliersOrdering(input); //TODO: INPORTANT:not sure if shouldnt be CaliersOutput instead of input data
             }
             C.R = oldRC;
 
             int oldCQ = C.Q;
             C.Q = Math.Max(C.Q, MinQInRange + PSumInRange);
+            LB = PrmtShrageOrderingNotChagingInput(output);
             if (LB < UB)
             {
-                CaliersOrdering(inputData); //TODO: INPORTANT:not sure if shouldnt be CaliersOutput instead of input data
+                CaliersOrdering(input); //TODO: INPORTANT:not sure if shouldnt be CaliersOutput instead of input data
             }
             C.Q = oldCQ;
 
