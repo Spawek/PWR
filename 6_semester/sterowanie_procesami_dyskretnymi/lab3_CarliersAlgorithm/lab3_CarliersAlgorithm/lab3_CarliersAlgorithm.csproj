@@ -42,10 +42,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calier.cs" />
     <Compile Include="Heap.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="OrderingTests.cs" />
+    <Compile Include="PrmtShrage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shrage.cs" />
+    <Compile Include="Task.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

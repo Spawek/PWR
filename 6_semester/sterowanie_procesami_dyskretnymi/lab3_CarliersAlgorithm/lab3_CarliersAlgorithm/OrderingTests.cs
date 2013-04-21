@@ -42,7 +42,7 @@ namespace lab3_CarliersAlgorithm
         public void PrmtShrageTest1()
         {
             var inputData = Program.LoadData("in50.txt");
-            int CMax = Program.PrmtShrageOrdering(inputData);
+            int CMax = Program.PrmtShrageOrdering(inputData).Value;
 
             Assert.AreEqual(1492, CMax); //from "wyniki.txt" 
         }
@@ -51,7 +51,7 @@ namespace lab3_CarliersAlgorithm
         public void PrmtShrageTest2()
         {
             var inputData = Program.LoadData("in100.txt");
-            int CMax = Program.PrmtShrageOrdering(inputData);
+            int CMax = Program.PrmtShrageOrdering(inputData).Value;
 
             Assert.AreEqual(3070, CMax); //from "wyniki.txt" 
         }
@@ -60,7 +60,7 @@ namespace lab3_CarliersAlgorithm
         public void PrmtShrageTest3()
         {
             var inputData = Program.LoadData("in200.txt");
-            int CMax = Program.PrmtShrageOrdering(inputData);
+            int CMax = Program.PrmtShrageOrdering(inputData).Value;
 
             Assert.AreEqual(6398, CMax); //from "wyniki.txt" 
         }
