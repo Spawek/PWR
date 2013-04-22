@@ -46,5 +46,45 @@ namespace lab3_CarliersAlgorithm
 
             return new KeyValuePair<List<Task>, int>(orderedTasks, CMax);
         }
+
+        /// <summary>
+        /// basing on:
+        /// http://dominik.zelazny.staff.iiar.pwr.wroc.pl/materialy/Algorytm_Schrage.pdf
+        /// </summary>
+        /// <param name="N">unordered tasks - IT CHANGES THIS DATA!</param>
+        /// <returns>pair(ordered tasks, CMax)</returns>
+        public static KeyValuePair<List<Task>, int> ShrageOrderingWoHeap(List<Task> inputData)
+        {
+            int t = 0;
+            int CMax = 0;
+            List<Task> N = new List<Task>(inputData);
+            List<Task> G = new List<Task>(N.Count);
+            List<Task> orderedTasks = new List<Task>(N.Count);
+
+            while (G.Count != 0 || N.Count != 0)
+            {
+                int minVal;
+                Task e;
+                while (N.Count != 0 && (minVal = N.Min(x => x.R)) <= t)
+                {
+                    e = N.Find(x => x.R == minVal);
+                    G.Add(e);
+                    N.Remove(e);
+                }
+                if (G.Count == 0)
+                {
+                    t = N.Min(x => x.R);
+                    continue;
+                }
+                int maxVal = G.Max(x => x.Q);
+                e = G.Find(task => task.Q == maxVal);
+                orderedTasks.Add(e);
+                t += e.P;
+                CMax = Math.Max(CMax, t + e.Q);
+                G.Remove(e);
+            }
+
+            return new KeyValuePair<List<Task>, int>(orderedTasks, CMax);
+        }
     }
 }

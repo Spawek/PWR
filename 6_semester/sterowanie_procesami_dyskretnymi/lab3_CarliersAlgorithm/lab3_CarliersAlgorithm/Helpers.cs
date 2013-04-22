@@ -43,22 +43,25 @@ namespace lab3_CarliersAlgorithm
 
         public enum Mode
         {
-            Shrage, PrmtShrage, Calier
+            Shrage, NoHeapShrage, PrmtShrage, Calier
         }
 
         static Mode ChooseMode()
         {
-            Console.WriteLine("Choose your mode:\n\t1 - Shrage\n\t2 - PrmtShrage\n\t3 - Calier\n");
+            Console.WriteLine("Choose your mode:\n\t1 - Shrage\n\t2 - No Heap Shrage\n\t3 - PrmtShrage\n\t4 - Calier\n");
 
             switch (Console.ReadKey().Key)
             {
                 case ConsoleKey.D1:
                     return Mode.Shrage;
-
+                    
                 case ConsoleKey.D2:
-                    return Mode.PrmtShrage;
+                    return Mode.NoHeapShrage;
 
                 case ConsoleKey.D3:
+                    return Mode.PrmtShrage;
+
+                case ConsoleKey.D4:
                     return Mode.Calier;
 
                 default:
