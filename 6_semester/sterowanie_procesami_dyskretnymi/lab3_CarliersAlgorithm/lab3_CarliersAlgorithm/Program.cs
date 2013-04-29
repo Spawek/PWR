@@ -57,7 +57,7 @@ namespace lab3_CarliersAlgorithm
                 Console.WriteLine("\n{0}: C_Max: {1}, calculations time: {2}ms", fileName, output.Value, timeSum.TotalMilliseconds / EXUCUTIONS_NO);
                 SaveOrderingToFile(output.Key, fileName.Replace("in", "out"));
             }
-            Console.WriteLine("(tests are basing on {0} tries)", EXUCUTIONS_NO);
+            Console.WriteLine("(NOTE: tests are basing on {0} tries)", EXUCUTIONS_NO);
             Console.WriteLine("\n\n\n");
             Main(new string[]{});
         }

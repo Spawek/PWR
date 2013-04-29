@@ -20,7 +20,7 @@ namespace lab3_CarliersAlgorithm
         {
             var shrageOut = ShrageOrdering(input);
             int U = shrageOut.Value;
-            //if (U < UB) //WTF?!?! after commending it algoritm started working correctly
+            //if (U < UB) //WTF?!?! after commenting it algorithm started working correctly
             {
                 UB = U;
                 output = shrageOut.Key;
