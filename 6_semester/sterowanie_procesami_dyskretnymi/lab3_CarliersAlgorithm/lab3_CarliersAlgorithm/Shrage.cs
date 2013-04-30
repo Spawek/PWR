@@ -79,6 +79,7 @@ namespace lab3_CarliersAlgorithm
                 int maxVal = G.Max(x => x.Q);
                 e = G.Find(task => task.Q == maxVal);
                 orderedTasks.Add(e);
+                e.workTime.Add(new KeyValuePair<int, int>(t, t + e.P)); //should not impact tests //needed for Calier
                 t += e.P;
                 CMax = Math.Max(CMax, t + e.Q);
                 G.Remove(e);

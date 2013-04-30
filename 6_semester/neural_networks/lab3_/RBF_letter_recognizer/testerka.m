@@ -1,9 +1,13 @@
 letters = load_letters_definitions();
+certainity_level = 0.75;
 
+[cut_letters, A_matrix] = cut_dimensions(load_letters_definitions(), certainity_level);
 
-tries_per_letter = 100;
+tries_per_letter = 10;
 avg_tries_per_letter = zeros(size(letters,2),1);
-[weights,r] = calc_weights_matrix(load_letters_definitions);
+%[weights,r] = calc_weights_matrix(load_letters_definitions);
+[weights,r] = calc_weights_matrix(cut_letters);
+cut_letters = (letters' * A_matrix)';
 for letter_no = 1:size(letters,2)
     tries = 0;
     letter_no    
@@ -13,7 +17,7 @@ for letter_no = 1:size(letters,2)
         match_failed = 0;
         changed_indexes = zeros(100,1);
         while(match_failed == 0 && random_changes_before_fail ~= 100)
-            if(RBF_recognizer(letter, weights, letters, r) ~= mod((letter_no-1), 35)+1)
+            if(RBF_recognizer(letter, weights, cut_letters, r, A_matrix) ~= mod((letter_no-1), 35)+1)
                 match_failed = 1;
             else 
                 % generate random index not changed yet

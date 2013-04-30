@@ -1,6 +1,8 @@
-function [ recognised_letter] = RBF_recognizer( letter , weights_matrix, letters, r)
+function [ recognised_letter] = RBF_recognizer( letter , weights_matrix, letters, r, A_matrix)
     
     n = size(weights_matrix,1);
+    
+    letter = (letter' * A_matrix)';
     
     pre = zeros(n,1);
     for i = 1:n

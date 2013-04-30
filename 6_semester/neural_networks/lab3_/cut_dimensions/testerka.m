@@ -1,10 +1,11 @@
 letters = load_letters_definitions();
 
 
-tries_per_letter = 100;
+tries_per_letter = 50;
+certainity_level = 0.80;
 avg_tries_per_letter = zeros(size(letters,2),1);
 
-[cut_letters_definitions, A_matrix] = cut_dimensions(load_letters_definitions(), 0.9);
+[cut_letters_definitions, A_matrix] = cut_dimensions(load_letters_definitions(), certainity_level);
 weights = calc_weights_matrix(cut_letters_definitions);
 for letter_no = 1:size(letters,2)
     tries = 0;
