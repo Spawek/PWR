@@ -1,0 +1,44 @@
+Lista 3:
+	rozpoznawanie zakorkowania na autostradzie:
+		do dzisiejszej meteody mamy zastosować metodę PCA (do ogarniczenia wymiarowości wejścia)
+		
+		jak wygląda sieć perceptronowa (perceptron główny):
+			odajemy wektor n-elementowy na wejście - wejście każdego neuronu jest ważone jakimiśtam wagami - potem sumowane (to warstwa pierwsza)
+			(czyli mnozymy przez macierz wag - a wiec wzmacniamy wejścia podobne do macierzy wag)
+			
+			wyjście z warstwy pierwszej przekazywane jest do sigmoidalnej funkcji (czyli  teraz cosinusa - bo ma 1 jak są zgodne i -1 gdy są prostopadłe, można wziąć hypertangensa)
+			
+			potem znowu warstwa wag i sumatory (czyli znowu mnożymy przez macierz)
+			
+			czyli po prostemu:
+				wejśćie * macierz wag -> przepuszczamy przez cosinusa -> znowu razy macierz wag i będzie działać
+				
+			y_i = sum(j=1 to p)(W_ij^2(tgh(sum(k=1 to h)(W_ki * x_k))))
+			
+	Wyznaczanie W (do tego jest potrzebna propagacja wsteczna):
+		Funkcja energii:
+			E(Z)(W^1, W^2) = sum(l=1 to R)(sum(i = 0 to n)(y_i, f_i))^2 //to jest mniej więcej gradient względem wszystkich składowych //bazan mówi, że nie wie co to jest ale to jest bardzo skomplikowane
+			
+		
+	Zadanie:
+		mamy obwodnice jakiegoś miasta podzieloną na 6 odcinków (mamy pomiary od 6:05 do 9:40)
+		odliczamy liczbę: moja to 4 -> więc mój odcinek to ---->>>>> 4 <<<<<------ 
+		
+		będziemy estymować średnią prędkość na naszym odcinku korzystając z informacji z przeszłości na odcinkach POZOSTAŁYCH!
+		bierzemy 5 próbek z ostanich 25 minut i układamy je w wektor
+		dla danego zestawu wyjściem ma być prędkość na naszych odcinkach w najbliższych 15 minutach
+		
+		na zbiorze treningkowym mamy nauczyć sieć działać - na zbiorze testowym mamy sprawdzać jak tod działa
+		
+		potem sprawdzić czy za pomocą PCA da się zredukować wymiar z 25 do jakiejś mniejszej
+		
+		wykorzystać maksymalnie jak się da MATLABA z przykładów (ale można pisać tylko swój kod) - mamy wykorzystać co się da z matlaba
+		
+		celem zadania jest dobranie liczby neuronów w sieci
+		
+		jeszcze raz:
+			mamy się dowiedzieć czy w ciągu 15-20 minut nasz odcinek - dane z przeszłości mają wskazywać nam dane z przyszłości
+			nigdzie na wejściu nie ma być żadnego czasu
+			
+		
+		
