@@ -1,4 +1,4 @@
-function [ w ] = make_learning_step( w, probes, training_results)
+function [ w ] = make_learning_step( w, probes, training_results, how_far_forward_to_forecast)
 
 %% constants
 random_change_val = 0.007;
@@ -9,7 +9,7 @@ probe_size = size(probes, 1);
 
 %% road speed prediction basing on curr weights
 predictions = make_predictions(w, probes);
-sqr_error = mean((predictions - training_results).^2);
+sqr_error = mean((predictions(1:end-how_far_forward_to_forecast) - training_results).^2);
 
 %% 'gradient calculating' 
 random_weight_index = ceil(rand() * probe_size);
@@ -17,7 +17,7 @@ w(random_weight_index) = w(random_weight_index) + random_change_val;
 
 %% road speed prediction basing on curr weights
 predictions = make_predictions(w, probes);  
-new_sqr_error = mean((predictions - training_results).^2);
+new_sqr_error = mean((predictions(1:end-how_far_forward_to_forecast) - training_results).^2);
 error_diff = new_sqr_error - sqr_error;
 
 %% resetting weights matrix

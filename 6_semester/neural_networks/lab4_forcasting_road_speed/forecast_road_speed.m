@@ -3,6 +3,7 @@ function [ predictions ] = forecast_road_speed( training_data, work_data )
 %% constants declaration
 backward_data_usage_depth = 4; % app will use actual data this no backward
 road_you_need_speed_on = 3;
+how_far_forward_to_forecast = 3;
 
 % no of times that every nauron will be recalculated
 % (neurons are recalculated in random permutation)
@@ -25,24 +26,25 @@ w = 2 / probe_size * rand(probe_size, 1);
 probes = generate_probes(training_data, backward_data_usage_depth);
 
 %% getting training_results arr from training data
-training_results = training_data(road_you_need_speed_on, backward_data_usage_depth+2:end)';
+training_results = training_data(road_you_need_speed_on, backward_data_usage_depth+1+how_far_forward_to_forecast:end)';
 
 %% network learning!
 for iterations = 1:learning_iterations*probe_size;
-    w = make_learning_step(w, probes, training_results);
+    w = make_learning_step(w, probes, training_results, how_far_forward_to_forecast);
 end
 
 %% tests
 predictions = make_predictions(w, probes);
-abs_error = abs((predictions - training_results));
+abs_error = abs((predictions(1:end-how_far_forward_to_forecast) - training_results));
 
-predictions = [zeros(backward_data_usage_depth+1,1);predictions];
+%predictions = [zeros(backward_data_usage_depth+1,1);predictions];
 
 clf
 subplot(2,1,1)
 plot(predictions, 'r')
 hold on
-plot(training_data(road_you_need_speed_on,:),'b')
+%plot(training_data(road_you_need_speed_on,:),'b')
+plot(training_results, 'b')
 
 subplot(2,1,2)
 plot(abs_error);
