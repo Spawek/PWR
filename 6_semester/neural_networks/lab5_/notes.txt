@@ -1,0 +1,24 @@
+ściągnąć pakiet netlab - Bishopa - i odpaloć demgmm1 - do testowania (w google - "netlab matlab bishop")
+demo gmm1
+
+Bishop - propagacja wsteczna 
+
+----
+RBF - mamy 800 centrów
+trzeba dobrać promień (żeby był jak najszerszy?)
+"ja nie wiem czy to będzie działać?"
+
+na wyjściu powinniśmy mieć 3 liczby (predykcje na następne 15 minut)
+
+żeby obejść problem z aproksymacją (żeby sieć uogulniła - wygładziła dane) - konstruujemys sieć, która będzie miała mniej centrów niż danych 
+
+---
+cała zabawa polega na tym, że algorytm RBF'a jest dwuetapowy - trzeba wyliczyć centra, a potem wyliczyć macierz wag
+
+trzeba zrobić to za pomocą "optimization maximization" - propozycja dema z netliba - opisane jest to w książce Bishopa
+
+wzorki są podobno gdzieś na jego stronie (a na pewno w Bishopie, bo chyba z niego to przepisywał na tablice)
+
+sieć będzie aproksymować, a nie interpolować(???)
+
+dodać w netlibie jeszcze 1 pętlę zewnętrzną, która iteruje po liczbie klastrów, wyznaczyć optimum ilości centrów
