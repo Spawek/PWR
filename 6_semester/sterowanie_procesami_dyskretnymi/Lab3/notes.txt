@@ -1,0 +1,6 @@
+t = max (t, R_j) + p_j
+Cmax = max(Cmax, t+q_s)
+
+ALGORYTM SHARAGE(?): http://dominik.zelazny.staff.iiar.pwr.wroc.pl/materialy/Algorytm_Schrage.pdf
+	najpierw weź zadanie z min R
+	

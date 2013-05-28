@@ -1,0 +1,6 @@
+t = max (t, R_j) + p_j
+Cmax = max(Cmax, t+q_s)
+
+ALGORYTM SHARAGE(?):
+	najpierw weź zadanie z min R
+	

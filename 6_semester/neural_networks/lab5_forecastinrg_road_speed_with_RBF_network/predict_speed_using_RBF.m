@@ -13,7 +13,11 @@ function [ predicted_speed ] = predict_speed_using_RBF( input, weight_matrix, A_
 
     %% find and return best match 
     recognised_point = find(ismember(y, max(y)));
-    predicted_speed = training_data(ROAD_TO_PREDICT_ON, BACKWARD_DATA_USAGE + HOW_FAR_TO_PREDICT + recognised_point);
+    taken_point = BACKWARD_DATA_USAGE + HOW_FAR_TO_PREDICT + recognised_point;
+    if(taken_point > size(training_data,2))
+       taken_point = size(training_data,2); 
+    end
+    predicted_speed = training_data(ROAD_TO_PREDICT_ON, taken_point);
 
 end
 
