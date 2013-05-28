@@ -60,7 +60,7 @@ namespace lab3_CarliersAlgorithm
             }
             C.R = oldRC;
 
-            int oldCQ = C.Q;
+            int ` = C.Q;
             C.Q = Math.Max(C.Q, MinQInRange + PSumInRange);
             LB = PrmtShrageOrderingNotChagingInput(output).Value;
             if (LB < UB)
