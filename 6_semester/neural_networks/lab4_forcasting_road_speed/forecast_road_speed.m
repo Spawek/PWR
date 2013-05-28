@@ -43,11 +43,11 @@ predictions = make_predictions(w, probes);
 abs_error = abs((predictions(1:end-how_far_forward_to_forecast) - training_results));
 
 %% for real data
-real_data = fix_input_data(real_data);
-probes = generate_probes(real_data, backward_data_usage_depth);
-predictions = make_predictions(w, probes);
-training_results = real_data(road_you_need_speed_on, backward_data_usage_depth+1+how_far_forward_to_forecast:end)';
-abs_error = abs((predictions(1:end-how_far_forward_to_forecast) - training_results));
+%real_data = fix_input_data(real_data);
+%probes = generate_probes(real_data, backward_data_usage_depth);
+%predictions = make_predictions(w, probes);
+%training_results = real_data(road_you_need_speed_on, backward_data_usage_depth+1+how_far_forward_to_forecast:end)';
+%abs_error = abs((predictions(1:end-how_far_forward_to_forecast) - training_results));
 
 clf
 subplot(2,1,1)

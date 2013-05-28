@@ -22,3 +22,5 @@ wzorki są podobno gdzieś na jego stronie (a na pewno w Bishopie, bo chyba z ni
 sieć będzie aproksymować, a nie interpolować(???)
 
 dodać w netlibie jeszcze 1 pętlę zewnętrzną, która iteruje po liczbie klastrów, wyznaczyć optimum ilości centrów
+
+wstępne ustawienia centrów mają być losowane		
