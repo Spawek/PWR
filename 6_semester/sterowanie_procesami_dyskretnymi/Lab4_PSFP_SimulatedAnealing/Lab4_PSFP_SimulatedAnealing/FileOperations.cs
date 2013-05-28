@@ -30,15 +30,17 @@ namespace Lab4_PSFP_SimulatedAnealing
                     if (line == String.Empty)
                     {
                         currLListNode = taskList[++currListPos].First;
-                        currLListNode.Value.transportTimes.Add(0); //transport to first node is always zero in here
                     }
                     else
                     {
+                        currLListNode.Value.transportTimes.Add(0); //transport to first node is always zero in here
+
                         string[] splittedLine = line.Split(new string[] { " ", "\t" }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (string transportTime in splittedLine)
                         {
                             currLListNode.Value.transportTimes.Add(Convert.ToInt32(transportTime));
                         }
+                        currLListNode = currLListNode.Next;
                     }
                 }
             }
