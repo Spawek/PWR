@@ -77,23 +77,23 @@ namespace Lab4_PSFP_SimulatedAnealing
 
         static void Main(string[] args)
         {
-            var inputTasks = FileOperations.LoadDataFromFiles("pfsp_-_instancje.txt", "pfsp_-_transport.txt");
+            //var inputTasks = FileOperations.LoadDataFromFiles("pfsp_-_instancje.txt", "pfsp_-_transport.txt");
 
-            int choosenTask = 42; //coz its the answer to the universe!
-            var NEHOrderedTasks = NEHOrdering(inputTasks[choosenTask]); //MAGIC! :D
+            //int choosenTask = 42; //coz its the answer to the universe!
+            //var NEHOrderedTasks = NEHOrdering(inputTasks[choosenTask]); //MAGIC! :D
 
-            //TODO: use AVG(C) instead of MAX(C)
-            AutoOrderingOptimization.SimulatedAnealing(
-                inputList: inputTasks[choosenTask], 
-                targetFoo: CalcCMaxforPermutation, 
-                mutatorFoo: AutoOrderingOptimization.MutatorFooGenerator<Task>(0.6d, 0.37d), 
-                tempDecreasingSpeed: 0.99d, 
-                startingTemperature: 500.0d, 
-                iterationsWOChangeToStop: 100
-            );
+            ////TODO: use AVG(C) instead of MAX(C)
+            //AutoOrderingOptimization.SimulatedAnealing(
+            //    inputList: inputTasks[choosenTask], 
+            //    targetFoo: CalcCMaxforPermutation, 
+            //    mutatorFoo: AutoOrderingOptimization.MutatorFooGenerator<Task>(0.6d, 0.37d), 
+            //    tempDecreasingSpeed: 0.99d, 
+            //    startingTemperature: 500.0d, 
+            //    iterationsWOChangeToStop: 100
+            //);
 
-            Console.WriteLine("NEH: {0}", CalcCMaxforPermutation(NEHOrderedTasks));
-            Console.WriteLine("Annealing: {0}", CalcCMaxforPermutation(NEHOrderedTasks));
+            //Console.WriteLine("NEH: {0}", CalcCMaxforPermutation(NEHOrderedTasks));
+            //Console.WriteLine("Annealing: {0}", CalcCMaxforPermutation(NEHOrderedTasks));
 
             Console.ReadKey();
         }
