@@ -14,6 +14,17 @@ namespace Lab4_PSFP_SimulatedAnealing
             List<LinkedList<Task>> output = LoadSubtasksFromFile(subtaskFileName);
             output = LoadTransportTimesFromFile(transportTimesFileName, output);
 
+            foreach (var item in output)
+            {
+                foreach (var task in item)
+                {
+                    if (task.subtasks.Count != task.transportTimes.Count)
+                    {
+                        throw new ApplicationException();
+                    }
+                }
+            }
+
             return output;
         }
 
@@ -72,7 +83,18 @@ namespace Lab4_PSFP_SimulatedAnealing
                     }
                 }
             }
+
             return output;
+        }
+
+        public static void WritePermutationToStream(LinkedList<Task> tasks, StreamWriter stream)
+        {
+            foreach (Task task in tasks)
+            {
+                stream.Write(task.taskNo + "\t");
+            }
+            stream.WriteLine();
+            stream.Flush();
         }
 
     }
