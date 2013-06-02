@@ -36,7 +36,7 @@ namespace Lab4_PSFP_SimulatedAnealing
                         );
                     }
 
-                    string outputMsg = String.Format("{0}, {1}, {2}, {3}, {4}",
+                    string outputMsg = String.Format("{0}. {1}. {2}. {3}. {4}",
                         taskNo,
                         inputTasks[taskNo].Count,
                         inputTasks[taskNo].First().subtasks.Count,
@@ -45,7 +45,7 @@ namespace Lab4_PSFP_SimulatedAnealing
                     );
                     foreach (var item in AnnealingNEHOrderedTasks)
                     {
-                        outputMsg += ", " + Convert.ToString(NEHOrdering.CalcCAvgforPermutation(item));
+                        outputMsg += ". " + Convert.ToString(NEHOrdering.CalcCAvgforPermutation(item));
                     }
 
                     statsStream.WriteLine(outputMsg);
