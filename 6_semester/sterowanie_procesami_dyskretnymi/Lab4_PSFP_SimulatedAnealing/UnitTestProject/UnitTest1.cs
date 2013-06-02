@@ -34,16 +34,16 @@ namespace UnitTestProject
             second.Value = tmp;
         }
 
-        private int BruteforceCalcBestPermutationCMax(LinkedList<Task> inputTasks)
+        private double BruteforceCalcBestPermutationCMax(LinkedList<Task> inputTasks)
         {
-            int bestCMax = int.MaxValue;
+            double bestCMax = int.MaxValue;
             for (LinkedListNode<Task> i = inputTasks.First; i != null; i = i.Next)
             {
                 for (LinkedListNode<Task> j = inputTasks.First; j != null; j = j.Next)
                 {
                     SwapWith<Task>(i, j);
 
-                    int currCMax = Program.CalcCMaxforPermutation(inputTasks);
+                    double currCMax = NEHOrdering.CalcCMaxforPermutation(inputTasks);
                     if (currCMax < bestCMax)
                     {
                         bestCMax = currCMax;
@@ -57,8 +57,8 @@ namespace UnitTestProject
         [TestMethod]
         public void CalcCMaxforPermutationTest()
         {
-            int actual = Program.CalcCMaxforPermutation(tasks);
-            int expected = 28;
+            double actual = NEHOrdering.CalcCMaxforPermutation(tasks);
+            double expected = 28;
 
             Assert.AreEqual(expected, actual);
         }
@@ -66,12 +66,12 @@ namespace UnitTestProject
         [TestMethod]
         public void NEHOrderingTest()
         {
-            int expected = BruteforceCalcBestPermutationCMax(tasks); 
+            double expected = BruteforceCalcBestPermutationCMax(tasks); 
             //IMPORTANT: ACTUALLY IT CAN BE BETTER SOLUTION THAN NEH ONE, BUT POSSIBILITY FOR THAT TO HAPPEN IS VERY SMALL WHEN NO OF TASK IS SMALL 
             //(SMALLER THAN TO MAKE ERROR BY CALCULATING IT ON MY OWN)
 
-            var NEHSolution = Program.NEHOrderingCMax(tasks);
-            int actual = Program.CalcCMaxforPermutation(NEHSolution);
+            var NEHSolution = NEHOrdering.NEHOrderingCMax(tasks);
+            double actual = NEHOrdering.CalcCMaxforPermutation(NEHSolution);
 
             Assert.AreEqual(expected, actual);
         }
@@ -79,20 +79,20 @@ namespace UnitTestProject
         [TestMethod]
         public void SimulatedAnnealingSwapTest()
         {
-            int expected = BruteforceCalcBestPermutationCMax(tasks);
-            int actual = int.MaxValue;
-            int delta = 1;
+            double expected = BruteforceCalcBestPermutationCMax(tasks);
+            double actual = int.MaxValue;
+            double delta = 1;
 
             for (int i = 0; i < 20; i++)
             {
                 var AnnealingSolution = AutoOrderingOptimization.SimulatedAnealing(
                 inputList: tasks,
-                targetFoo: Program.CalcCMaxforPermutation,
+                targetFoo: NEHOrdering.CalcCMaxforPermutation,
                 mutatorFoo: AutoOrderingOptimization.MutatorFooGenerator<Task>(1.0d, 0.0d), //swap only
                 tempDecreasingSpeed: 0.97d,
                 startingTemperature: 10000.0d,
                 iterationsWOChangeToStop: 40);
-                actual = Math.Min(actual, Program.CalcCMaxforPermutation(AnnealingSolution));
+                actual = Math.Min(actual, NEHOrdering.CalcCMaxforPermutation(AnnealingSolution));
             }
 
             Assert.AreEqual(expected, actual, delta);
@@ -102,20 +102,20 @@ namespace UnitTestProject
         [TestMethod]
         public void SimulatedAnnealingInsertTest()
         {
-            int expected = BruteforceCalcBestPermutationCMax(tasks);
-            int actual = int.MaxValue;
-            int delta = 1;
+            double expected = BruteforceCalcBestPermutationCMax(tasks);
+            double actual = int.MaxValue;
+            double delta = 1;
 
             for (int i = 0; i < 20; i++)
             {
                 var AnnealingSolution = AutoOrderingOptimization.SimulatedAnealing(
                 inputList: tasks,
-                targetFoo: Program.CalcCMaxforPermutation,
+                targetFoo: NEHOrdering.CalcCMaxforPermutation,
                 mutatorFoo: AutoOrderingOptimization.MutatorFooGenerator<Task>(0.0d, 1.0d), //insert only
                 tempDecreasingSpeed: 0.97d,
                 startingTemperature: 10000.0d,
                 iterationsWOChangeToStop: 40);
-                actual = Math.Min(actual, Program.CalcCMaxforPermutation(AnnealingSolution));
+                actual = Math.Min(actual, NEHOrdering.CalcCMaxforPermutation(AnnealingSolution));
 
             }
 
@@ -125,19 +125,19 @@ namespace UnitTestProject
         [TestMethod]
         public void SimulatedAnnealingChamgeOrredInBlockTest()
         {
-            int expected = BruteforceCalcBestPermutationCMax(tasks);
-            int actual = int.MaxValue;
-            int delta = 1;
+            double expected = BruteforceCalcBestPermutationCMax(tasks);
+            double actual = int.MaxValue;
+            double delta = 1;
             for (int i = 0; i < 20; i++)
             {
                 var AnnealingSolution = AutoOrderingOptimization.SimulatedAnealing(
                 inputList: tasks,
-                targetFoo: Program.CalcCMaxforPermutation,
+                targetFoo: NEHOrdering.CalcCMaxforPermutation,
                 mutatorFoo: AutoOrderingOptimization.MutatorFooGenerator<Task>(0.0d, 0.0d), //change order in block only
                 tempDecreasingSpeed: 0.97d,
                 startingTemperature: 10000.0d,
                 iterationsWOChangeToStop: 40);
-                actual = Math.Min(actual, Program.CalcCMaxforPermutation(AnnealingSolution));
+                actual = Math.Min(actual, NEHOrdering.CalcCMaxforPermutation(AnnealingSolution));
 
             }
 
@@ -147,19 +147,19 @@ namespace UnitTestProject
         [TestMethod]
         public void SimulatedAnnealinMixedMutationTest()
         {
-            int expected = BruteforceCalcBestPermutationCMax(tasks);
-            int actual = int.MaxValue;
-            int delta = 1;
+            double expected = BruteforceCalcBestPermutationCMax(tasks);
+            double actual = int.MaxValue;
+            double delta = 1;
             for (int i = 0; i < 20; i++)
             {
                 var AnnealingSolution = AutoOrderingOptimization.SimulatedAnealing(
                 inputList: tasks,
-                targetFoo: Program.CalcCMaxforPermutation,
+                targetFoo: NEHOrdering.CalcCMaxforPermutation,
                 mutatorFoo: AutoOrderingOptimization.MutatorFooGenerator<Task>(0.5d, 0.45d), //change order in block only
                 tempDecreasingSpeed: 0.97d,
                 startingTemperature: 10000.0d,
                 iterationsWOChangeToStop: 40);
-                actual = Math.Min(actual, Program.CalcCMaxforPermutation(AnnealingSolution));
+                actual = Math.Min(actual, NEHOrdering.CalcCMaxforPermutation(AnnealingSolution));
 
             }
 
