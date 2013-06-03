@@ -1,6 +1,6 @@
-function [ weights_matrix, r] = calc_weights_matrix( letters )
+function [ weights_matrix, r] = calc_weights_matrix( patterns )
 
-n = size(letters,2);
+n = size(patterns,2);
 
 F = eye(n);
 
@@ -9,7 +9,7 @@ l = 13;
 r_max = 0;
 for i = 1:n
     for j = 1:n
-        cur_r = distance(letters(:,i), letters(:, j));
+        cur_r = distance(patterns(:,i), patterns(:, j));
         if(cur_r > r_max)
            r_max = cur_r; 
         end
@@ -21,7 +21,7 @@ r = r_max/l;
 Phi = zeros(n);
 for i = 1:n
    for j = 1:n
-       Phi(i,j) = exp(-1*(distance(letters(:,i), letters(:,j))/r)^2);
+       Phi(i,j) = exp(-1*(distance(patterns(:,i), patterns(:,j))/r)^2);
    end
 end
 
