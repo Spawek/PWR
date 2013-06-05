@@ -8,9 +8,10 @@ HOW_FAR_TO_PREDICT = 3;
 %% prepare training data
 %training_data = prepare_raining_data();
 %training_data = prepare_reduced_training_data();
-cd netlab % bad me ;/
-mydemGmm1();
-cd ..
+training_data = prepare_kohonen_training_data();
+%cd netlab 
+%mydemGmm1();
+%cd ..
 %% calc weights matrix and A matrix (for PCA)
 [weight_matrix, A_matrix, r, PCAd_probes] = ...
     calc_PCAd_RBF_weight_matrix(training_data, BACKWARD_DATA_USAGE);
