@@ -6,7 +6,7 @@ ROAD_TO_PREDICT_ON = 5;
 HOW_FAR_TO_PREDICT = 3;
 
 %% prepare training data
-training_data = prepare_reduced_training_data();%prepare_training_data();
+training_data = prepare_training_data();%prepare_training_data();
 
 %% calc weights matrix and A matrix (for PCA)
 [weight_matrix, A_matrix, r, PCAd_probes] = ...
