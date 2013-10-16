@@ -33,7 +33,7 @@ namespace Lab4_PSFP_SimulatedAnealing
         {
             LinkedListNode<Task> bestPosToInsertBefore = null;
             double bestPosCMax = int.MaxValue;
-            LinkedListNode<Task> node = currList.First; //DOESNT WORK FOR SOME REASON  - will be much faster
+            LinkedListNode<Task> node = currList.First; 
             while (node != null)
             {
                 currList.AddBefore(node, taskToInsert);
@@ -93,7 +93,7 @@ namespace Lab4_PSFP_SimulatedAnealing
         {
             LinkedListNode<Task> bestPosToInsertBefore = null;
             double bestPosCMax = double.MaxValue;
-            LinkedListNode<Task> node = currList.First; //DOESNT WORK FOR SOME REASON  - will be much faster
+            LinkedListNode<Task> node = currList.First;
             while (node != null)
             {
                 currList.AddBefore(node, taskToInsert);

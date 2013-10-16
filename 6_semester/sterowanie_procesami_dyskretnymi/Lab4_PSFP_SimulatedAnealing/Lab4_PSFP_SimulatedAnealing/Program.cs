@@ -29,14 +29,14 @@ namespace Lab4_PSFP_SimulatedAnealing
                         AnnealingNEHOrderedTasks[i] = AutoOrderingOptimization.SimulatedAnealing(
                             inputList: NEHOrderedTasks,
                             targetFoo: NEHOrdering.CalcCAvgforPermutation,
-                            mutatorFoo: AutoOrderingOptimization.MutatorFooGenerator<Task>(1.0d, 0.0d),
+                            mutatorFoo: AutoOrderingOptimization.MutatorFooGenerator<Task>(0.60d, 0.37d),
                             tempDecreasingSpeed: 0.9998d,
                             startingTemperature: 300.0d + 3*i,
                             iterationsWOChangeToStop: 400 + 3*i
                         );
                     }
 
-                    string outputMsg = String.Format("{0}, {1}, {2}, {3}, {4}",
+                    string outputMsg = String.Format("{0}; {1}; {2}; {3}; {4}",
                         taskNo,
                         inputTasks[taskNo].Count,
                         inputTasks[taskNo].First().subtasks.Count,
@@ -45,7 +45,7 @@ namespace Lab4_PSFP_SimulatedAnealing
                     );
                     foreach (var item in AnnealingNEHOrderedTasks)
                     {
-                        outputMsg += ", " + Convert.ToString(NEHOrdering.CalcCAvgforPermutation(item));
+                        outputMsg += "; " + Convert.ToString(NEHOrdering.CalcCAvgforPermutation(item));
                     }
 
                     statsStream.WriteLine(outputMsg);

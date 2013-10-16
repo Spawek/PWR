@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 
 namespace Lab4_PSFP_SimulatedAnealing
 {
+    
     public class AutoOrderingOptimization
     {
         //from: http://stackoverflow.com/questions/3473787/swapping-nodes-on-a-single-linked-list
@@ -19,7 +21,7 @@ namespace Lab4_PSFP_SimulatedAnealing
         }
 
         Func<double, double, double> BoltzmanDistrubution = ((x, y) => x + y);
-
+        
         private static double BoltzmanDistributionAtPoint(double energyChange, double temperature)
         {
             const double BOLTZMAN_CONSTANT = 1;// 1.380648813E-23;
@@ -31,7 +33,6 @@ namespace Lab4_PSFP_SimulatedAnealing
 
 
         /// <summary>
-        /// ensures: node1 < node2
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
@@ -39,6 +40,7 @@ namespace Lab4_PSFP_SimulatedAnealing
         /// <param name="node2"></param>
         private static void Get2RandomNodes<T>(LinkedList<T> list, out LinkedListNode<T> node1, out LinkedListNode<T> node2)
         {
+            Contract.Requires(list != null);
             int index1 = rand.Next(list.Count-1);
             int index2 = -1;
             while (index1 >= index2)
@@ -70,6 +72,9 @@ namespace Lab4_PSFP_SimulatedAnealing
 
         private static void RandomlyReinsertElement<T>(LinkedList<T> list)
         {
+            Contract.Ensures(list != null);
+            Contract.Requires(list != null);
+
             LinkedListNode<T> node1;
             LinkedListNode<T> node2;
             Get2RandomNodes<T>(list, out node1, out node2);
@@ -190,7 +195,8 @@ namespace Lab4_PSFP_SimulatedAnealing
                 {
                     iterationsWoChange++;
                 }
-                temperature *= tempDecreasingSpeed;
+                //temperature *= tempDecreasingSpeed; //geometric
+                temperature = Math.Pow(temperature+1, tempDecreasingSpeed)-1; //exponental
                 //Console.WriteLine("TEMP: {0}, Change chance: {1}, Iterations WO change: {2}", temperature, a, iterationsWoChange);
             }
 
